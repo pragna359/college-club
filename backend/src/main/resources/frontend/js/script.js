@@ -1,10 +1,21 @@
+const API_BASE = '';
+
 // ===== CONTACT FORM =====
 function sendMessage() {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
     const message = document.getElementById('message').value;
+
     if (name && email && message) {
-        alert(`Thank you ${name}! Your message has been sent successfully!`);
+        fetch(API_BASE + '/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, subject, message })
+        })
+        .then(res => res.json())
+        .then(() => alert(`Thank you ${name}! Your message has been sent!`))
+        .catch(() => alert('Error sending message. Please try again.'));
     } else {
         alert('Please fill in all required fields!');
     }
@@ -12,7 +23,7 @@ function sendMessage() {
 
 // ===== LOAD MEMBERS FROM BACKEND =====
 function loadMembers() {
-    fetch('http://localhost:8080/api/members')
+    fetch(API_BASE + '/api/members')
         .then(res => res.json())
         .then(members => {
             const container = document.getElementById('members-container');
@@ -33,14 +44,12 @@ function loadMembers() {
                 `;
             });
         })
-        .catch(err => {
-            console.error('Error loading members:', err);
-        });
+        .catch(err => console.error('Error loading members:', err));
 }
 
 // ===== LOAD EVENTS FROM BACKEND =====
 function loadEvents() {
-    fetch('http://localhost:8080/api/events')
+    fetch(API_BASE + '/api/events')
         .then(res => res.json())
         .then(events => {
             const container = document.getElementById('events-container');
@@ -60,9 +69,7 @@ function loadEvents() {
                 `;
             });
         })
-        .catch(err => {
-            console.error('Error loading events:', err);
-        });
+        .catch(err => console.error('Error loading events:', err));
 }
 
 // ===== AUTO LOAD ON PAGE =====
