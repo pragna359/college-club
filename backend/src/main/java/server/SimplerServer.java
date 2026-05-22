@@ -16,9 +16,32 @@ public class SimplerServer {
     public static void start() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
+        // Serve frontend static files
+        server.createContext("/", (HttpExchange exchange) -> {
+            String path = exchange.getRequestURI().getPath();
+            if (path.equals("/")) path = "/index.html";
+
+            InputStream file = SimplerServer.class.getResourceAsStream("/frontend" + path);
+            if (file == null) {
+                String notFound = "404 Not Found";
+                exchange.sendResponseHeaders(404, notFound.length());
+                exchange.getResponseBody().write(notFound.getBytes());
+                exchange.getResponseBody().close();
+                return;
+            }
+
+            if (path.endsWith(".html")) exchange.getResponseHeaders().add("Content-Type", "text/html");
+            else if (path.endsWith(".css")) exchange.getResponseHeaders().add("Content-Type", "text/css");
+            else if (path.endsWith(".js")) exchange.getResponseHeaders().add("Content-Type", "application/javascript");
+
+            byte[] bytes = file.readAllBytes();
+            exchange.sendResponseHeaders(200, bytes.length);
+            exchange.getResponseBody().write(bytes);
+            exchange.getResponseBody().close();
+        });
+
         // Members endpoint
         server.createContext("/api/members", (HttpExchange exchange) -> {
-            // Allow frontend to access backend
             exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
             exchange.getResponseHeaders().add("Content-Type", "application/json");
 
@@ -41,9 +64,8 @@ public class SimplerServer {
 
             byte[] response = json.toString().getBytes();
             exchange.sendResponseHeaders(200, response.length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(response);
-            os.close();
+            exchange.getResponseBody().write(response);
+            exchange.getResponseBody().close();
         });
 
         // Events endpoint
@@ -69,9 +91,8 @@ public class SimplerServer {
 
             byte[] response = json.toString().getBytes();
             exchange.sendResponseHeaders(200, response.length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(response);
-            os.close();
+            exchange.getResponseBody().write(response);
+            exchange.getResponseBody().close();
         });
 
         server.start();
