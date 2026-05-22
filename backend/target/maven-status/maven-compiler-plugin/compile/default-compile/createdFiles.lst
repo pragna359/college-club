@@ -1,7 +1,7 @@
-Main.class
-db/DBConnection.class
 dao/EventDAO.class
 server/SimplerServer.class
-model/Member.class
 dao/MemberDAO.class
+Main.class
+db/DBConnection.class
+model/Member.class
 model/Event.class

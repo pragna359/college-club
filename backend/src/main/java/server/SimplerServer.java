@@ -21,7 +21,7 @@ public class SimplerServer {
             String path = exchange.getRequestURI().getPath();
             if (path.equals("/")) path = "/index.html";
 
-            InputStream file = SimplerServer.class.getResourceAsStream("/frontend" + path);
+            InputStream file = SimplerServer.class.getClassLoader().getResourceAsStream("frontend" + path);
             if (file == null) {
                 String notFound = "404 Not Found";
                 exchange.sendResponseHeaders(404, notFound.length());
