@@ -1,66 +1,36 @@
-<events class="html"></events>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members - ElevateX Club</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Members - ElevateX Club</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<!-- Navbar -->
+<nav>
+<div class="logo">ElevateX Club</div>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="members.html">Members</a></li>
+<li><a href="events.html">Events</a></li>
+<li><a href="gallery.html">Gallery</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
 
-    <!-- Navbar -->
-    <nav>
-        <div class="logo">ElevateX Club</div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="members.html">Members</a></li>
-            <li><a href="events.html">Events</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
+<!-- Members Section -->
+<section class="members">
+<h2>Our Members</h2>
+<p>Meet the amazing team behind ElevateX Club!</p>
 
-    <!-- Members Section -->
-    <section class="members">
-        <h2>Our Members</h2>
-        <p>Meet the amazing team behind ElevateX Club!</p>
+<!-- Dynamic members from backend -->
+<div class="members-grid" id="members-container">
+    <p>Loading members...</p>
+</div>
+</section>
 
-        <div class="members-grid">
-            <div class="member-card">
-                <div class="member-avatar">👤</div>
-                <h3>Pragna</h3>
-                <p>President</p>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">👤</div>
-                <h3>Rahul</h3>
-                <p>Vice President</p>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">👤</div>
-                <h3>Sneha</h3>
-                <p>Secretary</p>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">👤</div>
-                <h3>Arjun</h3>
-                <p>Treasurer</p>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">👤</div>
-                <h3>Divya</h3>
-                <p>Event Coordinator</p>
-            </div>
-            <div class="member-card">
-                <div class="member-avatar">👤</div>
-                <h3>Kiran</h3>
-                <p>Technical Lead</p>
-            </div>
-        </div>
-    </section>
-
-    <script src="js/script.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>

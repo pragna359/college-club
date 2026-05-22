@@ -10,7 +10,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        // Start the HTTP server
         SimplerServer.start();
 
         MemberDAO memberDAO = new MemberDAO();
@@ -90,6 +89,4 @@ public class Main {
             }
         }
     }
-}
-    
 }
