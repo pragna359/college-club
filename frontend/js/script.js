@@ -1,4 +1,4 @@
-const API_BASE = '';
+const API_BASE = 'https://college-club-production.up.railway.app';
 
 // ===== CONTACT FORM =====
 function sendMessage() {
