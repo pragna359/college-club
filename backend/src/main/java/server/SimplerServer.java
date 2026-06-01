@@ -14,7 +14,10 @@ import java.util.List;
 public class SimplerServer {
 
     public static void start() throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        String portEnv = System.getenv("PORT");
+        int port = (portEnv != null) ? Integer.parseInt(portEnv) : 8080;
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
         // Serve frontend static files
         server.createContext("/", (HttpExchange exchange) -> {
@@ -50,6 +53,14 @@ public class SimplerServer {
         // Members endpoint
         server.createContext("/api/members", (HttpExchange exchange) -> {
             exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+
+            if (exchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
+                exchange.sendResponseHeaders(200, -1);
+                return;
+            }
+
             exchange.getResponseHeaders().add("Content-Type", "application/json");
 
             MemberDAO memberDAO = new MemberDAO();
@@ -78,6 +89,14 @@ public class SimplerServer {
         // Events endpoint
         server.createContext("/api/events", (HttpExchange exchange) -> {
             exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+
+            if (exchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
+                exchange.sendResponseHeaders(200, -1);
+                return;
+            }
+
             exchange.getResponseHeaders().add("Content-Type", "application/json");
 
             EventDAO eventDAO = new EventDAO();
@@ -102,7 +121,33 @@ public class SimplerServer {
             exchange.getResponseBody().close();
         });
 
+        // Contact endpoint
+        server.createContext("/api/contact", (HttpExchange exchange) -> {
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+
+            if (exchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
+                exchange.sendResponseHeaders(200, -1);
+                return;
+            }
+
+            if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+                InputStream is = exchange.getRequestBody();
+                String body = new String(is.readAllBytes());
+                System.out.println("Contact form received: " + body);
+
+                byte[] response = "{\"message\":\"Message received!\"}".getBytes();
+                exchange.getResponseHeaders().add("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, response.length);
+                exchange.getResponseBody().write(response);
+                exchange.getResponseBody().close();
+            } else {
+                exchange.sendResponseHeaders(405, -1); // Method not allowed
+            }
+        });
+
         server.start();
-        System.out.println("Server started at http://localhost:8080");
+        System.out.println("Server started on port " + port);
     }
 }
